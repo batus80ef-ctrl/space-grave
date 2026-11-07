@@ -1166,7 +1166,10 @@ def render_intro():
             st.button(T("Canlı İzlemeyi Başlat  →", "Start Live Tracking  →"), key="sg_launch_2", type="primary", on_click=_enter_app, **stretch(st.button))
         st.markdown(_flat(foot_html), unsafe_allow_html=True)
     render_lang_switch("24px", "12px")
-     c1, c2, c3 = st.columns([1, 1.1, 1])
+    st.markdown(_flat(metrics_html), unsafe_allow_html=True)
+            
+        st.markdown(_flat(sections_html), unsafe_allow_html=True)
+        c1, c2, c3 = st.columns([1, 1.1, 1])
         with c2:
             st.button(T("Canlı İzlemeyi Başlat  →", "Start Live Tracking  →"), key="sg_launch_2", type="primary", on_click=_enter_app, **stretch(st.button))
         st.markdown(_flat(foot_html), unsafe_allow_html=True)

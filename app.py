@@ -259,31 +259,59 @@ CACHE_TTL_S = 2 * 3600
 
 
 def _fetch_group(g):
-    """Dönüş: (tles, kaynak) — kaynak: 'live' | 'cache' | 'stale' | 'fail'"""
+    """Gerçek tarayıcı taklidi yapan, hata toleranslı ve önbellek destekli veri çekme motoru"""
     path = os.path.join(CACHE_DIR, f"{g}.tle")
     has_cache = os.path.exists(path)
+    
+    # Önbellek taze ise diskten oku
     if has_cache and time.time() - os.path.getmtime(path) < CACHE_TTL_S:
         with open(path, encoding="utf-8") as f:
-            return parse_tles(f.read()), "cache"
-    try:
-        r = requests.get(
-            f"https://celestrak.org/NORAD/elements/gp.php?GROUP={g}&FORMAT=tle",
-            timeout=(5, 30), headers=HEADERS
-        )
-        r.raise_for_status()
-        tles = parse_tles(r.text)
-        if not tles:
-            raise ValueError("boş yanıt")
-        os.makedirs(CACHE_DIR, exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(r.text)
-        return tles, "live"
-    except Exception:
-        # İndirme olmadıysa eski de olsa gerçek veriyi kullan
-        if has_cache:
-            with open(path, encoding="utf-8") as f:
-                return parse_tles(f.read()), "stale"
-        return [], "fail"
+            tles = parse_tles(f.read())
+            if tles:
+                return tles, "cache"
+
+    # CelesTrak IP engeline karşı gerçekçi tarayıcı başlıkları (Headers)
+    browser_headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9,tr;q=0.8",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Sec-Ch-Ua": '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": '"Windows"',
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1"
+    }
+
+    session = requests.Session()
+    url = f"https://celestrak.org/NORAD/elements/gp.php?GROUP={g}&FORMAT=tle"
+
+    for attempt in range(3):
+        try:
+            r = session.get(url, timeout=(10, 30), headers=browser_headers)
+            if r.status_code == 200 and r.text and "1 " in r.text:
+                tles = parse_tles(r.text)
+                if tles:
+                    os.makedirs(CACHE_DIR, exist_ok=True)
+                    with open(path, "w", encoding="utf-8") as f:
+                        f.write(r.text)
+                    return tles, "live"
+            time.sleep(1.5 * (attempt + 1))
+        except Exception:
+            time.sleep(1)
+
+    # Canlı çekilemediyse ancak eskimiş (stale) cache varsa sisteme çökmemek için onu ver
+    if has_cache:
+        with open(path, encoding="utf-8") as f:
+            tles = parse_tles(f.read())
+            if tles:
+                return tles, "stale"
+
+    return [], "fail"
 
 
 @st.cache_data(ttl=CACHE_TTL_S, show_spinner=False)

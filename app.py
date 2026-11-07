@@ -102,7 +102,6 @@ def render_live_threat_panel():
         .risk-grid { grid-template-columns: 1fr; }
     }
     </style>
-
     <div class="risk-panel">
         <div class="risk-header">
             <span class="pulse-dot"></span>
@@ -111,7 +110,7 @@ def render_live_threat_panel():
         <div class="risk-grid">
             <div class="risk-stat">
                 <span class="stat-label">İlgili Nesneler (Aktif vs Enkaz)</span>
-                <span class="stat-value">STARLINK-3011 <span style="color:#8b9bb4;">&</span> COSMOS 2251 DEB</span>
+                <span class="stat-value">STARLINK-3011 &amp; COSMOS 2251 DEB</span>
             </div>
             <div class="risk-stat">
                 <span class="stat-label">Tahmini Mesafe (TCA)</span>
@@ -123,8 +122,7 @@ def render_live_threat_panel():
             </div>
         </div>
     </div>
-    """, unsafe_allow_html=True
-
+    """, unsafe_allow_html=True)
 # Streamlit sürümleri arası uyumluluk:
 # yeni sürümlerde use_container_width kaldırıldı -> width="stretch"
 def stretch(fn):

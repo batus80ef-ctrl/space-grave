@@ -36,7 +36,94 @@ except ImportError:
 RE = 6378.137  # km, Earth equatorial radius
 WGS84_F = 1 / 298.257223563  # Dünya basıklığı
 CREWED_PREFIXES = ("ISS", "CSS", "TIANGONG")
+def render_live_threat_panel():
+    st.markdown("""
+    <style>
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(255, 75, 75, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); }
+    }
+    .risk-panel {
+        background: linear-gradient(145deg, rgba(20, 25, 40, 0.6), rgba(10, 15, 25, 0.8));
+        border-left: 4px solid #ff4b4b;
+        border-radius: 12px;
+        padding: 24px;
+        margin: 30px 0;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .risk-header {
+        color: #ff4b4b;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: 1px;
+    }
+    .pulse-dot {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-color: #ff4b4b;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    .risk-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 20px;
+    }
+    .risk-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .stat-label {
+        font-size: 0.85rem;
+        color: #8b9bb4;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .stat-value {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+    .danger-text {
+        color: #ff4b4b;
+        text-shadow: 0 0 10px rgba(255, 75, 75, 0.4);
+    }
+    @media (max-width: 768px) {
+        .risk-grid { grid-template-columns: 1fr; }
+    }
+    </style>
 
+    <div class="risk-panel">
+        <div class="risk-header">
+            <span class="pulse-dot"></span>
+            CANLI KIRMIZI ALARM - TESPİT EDİLEN YAKINLAŞMA
+        </div>
+        <div class="risk-grid">
+            <div class="risk-stat">
+                <span class="stat-label">İlgili Nesneler (Aktif vs Enkaz)</span>
+                <span class="stat-value">STARLINK-3011 <span style="color:#8b9bb4;">&</span> COSMOS 2251 DEB</span>
+            </div>
+            <div class="risk-stat">
+                <span class="stat-label">Tahmini Mesafe (TCA)</span>
+                <span class="stat-value danger-text">0.84 km</span>
+            </div>
+            <div class="risk-stat">
+                <span class="stat-label">Kritik Risk Skoru</span>
+                <span class="stat-value danger-text">94 / 100</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True
 
 # Streamlit sürümleri arası uyumluluk:
 # yeni sürümlerde use_container_width kaldırıldı -> width="stretch"

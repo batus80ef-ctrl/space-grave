@@ -1146,18 +1146,17 @@ def render_intro():
     with (st.container(key="sg_fg") if keyed else st.container()):
         st.markdown(_flat(nav_html), unsafe_allow_html=True)
         left, _ = st.columns([1.25, 1])
-               with left:
-    left, _ = st.columns([1.25, 1])
+               left, _ = st.columns([1.25, 1])
     with left:
         st.markdown(_flat(hero_html), unsafe_allow_html=True)
         render_live_threat_panel()
         b1, b2 = st.columns([1.15, 1])
-            with b1:
-                st.button(T("Canlı İzlemeyi Başlat  →", "Start Live Tracking  →"), key="sg_launch", type="primary", on_click=_enter_app, **stretch(st.button))
-            with b2:
-                st.markdown(f'<a class="sg-ghost" href="#features">{T("Özellikleri keşfet", "Explore features")}</a>', unsafe_allow_html=True)
-            st.markdown(_flat(metrics_html), unsafe_allow_html=True)
-        st.markdown(_flat(sections_html), unsafe_allow_html=True)
+        with b1:
+            st.button(T("Canlı İzlemeyi Başlat  →", "Start Live Tracking  →"), key="sg_launch", type="primary", on_click=_enter_app, **stretch(st.button))
+        with b2:
+            st.markdown(f'<a class="sg-ghost" href="#features">{T("Özellikleri keşfet", "Explore features")}</a>', unsafe_allow_html=True)
+        st.markdown(_flat(metrics_html), unsafe_allow_html=True)
+    
         c1, c2, c3 = st.columns([1, 1.1, 1])
         with c2:
             st.button(T("Canlı İzlemeyi Başlat  →", "Start Live Tracking  →"), key="sg_launch_2", type="primary", on_click=_enter_app, **stretch(st.button))

@@ -911,6 +911,7 @@ setTimeout(function () { document.body.classList.add('ready'); }, 3000);
 
 
 def render_intro():
+    render_live_threat_panel()
     n_active = len(CAT["groups"]["active"])
     n_total = n_active + len(CAT["debris"])
     feed_word = FEED_LABEL.split(" ")[0]

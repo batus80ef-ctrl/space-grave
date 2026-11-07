@@ -1157,6 +1157,9 @@ def render_intro():
             st.markdown(_flat(metrics_html), unsafe_allow_html=True)
             
         # Diğer bölümler sol sütunun DIŞINDA, ana akışta normal devam etmeli:
+        st.markdown(_flat(metrics_html), unsafe_allow_html=True)
+            
+        # Sol sütun bitti, bu satırlar ana hizada olmalı:
         st.markdown(_flat(sections_html), unsafe_allow_html=True)
         c1, c2, c3 = st.columns([1, 1.1, 1])
         with c2:

@@ -1144,9 +1144,8 @@ def render_intro():
 
     st.markdown(INTRO_CSS, unsafe_allow_html=True)
     with (st.container(key="sg_fg") if keyed else st.container()):
-        st.markdown(_flat(nav_html), unsafe_allow_html=True)
-        left, _ = st.columns([1.25, 1])
-               left, _ = st.columns([1.25, 1])
+    st.markdown(_flat(nav_html), unsafe_allow_html=True)
+    left, _ = st.columns([1.25, 1])
     with left:
         st.markdown(_flat(hero_html), unsafe_allow_html=True)
         render_live_threat_panel()

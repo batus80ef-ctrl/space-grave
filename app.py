@@ -823,8 +823,6 @@ setTimeout(function () { document.body.classList.add('ready'); }, 3000);
 })();
 </script></body></html>
 """
-
-
 def render_intro():
     n_active = len(CAT["groups"]["active"])
     n_total = n_active + len(CAT["debris"])
@@ -947,7 +945,6 @@ def render_intro():
     <div class="sg-foot">NASA Space Apps Challenge · JPL Command Center · SP4C3 GR4V3 &nbsp;|&nbsp; Veri: CelesTrak · Son güncelleme {CAT['fetched']}</div>
     """
 
-
     if st.session_state.lang == "en":
         nav_html = """
         <div class="sg-nav">
@@ -1062,12 +1059,14 @@ def render_intro():
         left, _ = st.columns([1.25, 1])
         with left:
             st.markdown(_flat(hero_html), unsafe_allow_html=True)
+            render_live_threat_panel()
             b1, b2 = st.columns([1.15, 1])
             with b1:
                 st.button(T("Canlı İzlemeyi Başlat  →", "Start Live Tracking  →"), key="sg_launch", type="primary", on_click=_enter_app, **stretch(st.button))
             with b2:
                 st.markdown(f'<a class="sg-ghost" href="#features">{T("Özellikleri keşfet", "Explore features")}</a>', unsafe_allow_html=True)
             st.markdown(_flat(metrics_html), unsafe_allow_html=True)
+        
         st.markdown(_flat(sections_html), unsafe_allow_html=True)
         c1, c2, c3 = st.columns([1, 1.1, 1])
         with c2:

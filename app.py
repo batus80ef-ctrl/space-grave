@@ -124,8 +124,16 @@ def _i18n_html(html, pairs):
     for a, b in pairs:
         html = html.replace(a, b)
     return html
-
-
+def render_live_threat_panel():
+    st.markdown("""
+    <div style="border: 1px solid rgba(252,61,33,0.5); background: linear-gradient(90deg, rgba(252,61,33,0.15) 0%, rgba(252,61,33,0.02) 100%); padding: 14px 20px; border-radius: 12px; display: flex; align-items: center; margin-bottom: 24px;">
+        <div style="width: 10px; height: 10px; background: #fc3d21; border-radius: 50%; box-shadow: 0 0 14px #fc3d21; margin-right: 16px;"></div>
+        <div>
+            <div style="color: #fc3d21; font-weight: 800; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;">Canlı Tehdit Radarı Aktif</div>
+            <div style="color: #e2e8f0; font-size: 14px; margin-top: 3px;">50 km güvenlik küresi devrede. Olası yakınlaşmalar izleniyor.</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 def render_lang_switch(right, bottom):
     """Sağ altta sabit ENG / TÜR kutucukları (giriş ve canlı izleme sayfasında ortak)."""
     active = "sg_lang_en" if st.session_state.lang == "en" else "sg_lang_tr"

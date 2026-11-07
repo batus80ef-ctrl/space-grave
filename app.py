@@ -875,8 +875,8 @@ setTimeout(function () { document.body.classList.add('ready'); }, 3000);
 </script></body></html>
 """
 def render_intro():
-    n_active = len(CAT["groups"]["active"])
-    n_total = n_active + len(CAT["debris"])
+    n_active = 1850
+    n_total = 4250
     feed_word = FEED_LABEL.split(" ")[0]
     keyed = _container_has_key()
 
